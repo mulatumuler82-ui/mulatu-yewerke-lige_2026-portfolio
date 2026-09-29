@@ -4,8 +4,14 @@ import profilePhoto from './profile.jpg';
 function App() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  
+  // Form state for adding projects
   const [newTitle, setNewTitle] = useState('');
   const [newDesc, setNewDesc] = useState('');
+  const [newCategory, setNewCategory] = useState('Full-Stack');
+  const [newTech, setNewTech] = useState('React, Node.js, MongoDB');
+  const [newGithub, setNewGithub] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
   const fetchProjects = async () => {
@@ -32,15 +38,23 @@ function App() {
 
     setSubmitting(true);
     try {
+      const techArray = newTech.split(',').map(t => t.trim());
       const response = await fetch('http://localhost:5000/api/projects', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: newTitle, description: newDesc })
+        body: JSON.stringify({ 
+          title: newTitle, 
+          description: newDesc, 
+          category: newCategory,
+          techStack: techArray,
+          githubUrl: newGithub || '#'
+        })
       });
       
       if (response.ok) {
         setNewTitle('');
         setNewDesc('');
+        setNewGithub('');
         fetchProjects();
       }
     } catch (error) {
@@ -48,6 +62,11 @@ function App() {
     }
     setSubmitting(false);
   };
+
+  // Filter projects based on selected tab
+  const filteredProjects = selectedCategory === 'All' 
+    ? projects 
+    : projects.filter(p => p.category === selectedCategory);
 
   return (
     <div style={{ 
@@ -90,8 +109,8 @@ function App() {
         </div>
         <div style={{ display: 'flex', gap: '25px', fontSize: '14px', fontWeight: '500', color: '#9ca3af' }}>
           <span style={{ color: '#ffffff', cursor: 'pointer' }}>Portfolio</span>
-          <span style={{ cursor: 'pointer' }}>Architecture</span>
           <span style={{ cursor: 'pointer' }}>Systems</span>
+          <span style={{ cursor: 'pointer' }}>Machine Learning</span>
           <span style={{ cursor: 'pointer' }}>Contact</span>
         </div>
       </nav>
@@ -100,7 +119,7 @@ function App() {
       <header style={{ 
         position: 'relative', 
         zIndex: 10,
-        padding: '80px 20px 60px 20px', 
+        padding: '70px 20px 40px 20px', 
         textAlign: 'center',
         maxWidth: '900px',
         margin: '0 auto'
@@ -165,54 +184,46 @@ function App() {
 
         <h1 style={{ 
           margin: '0 0 15px 0', 
-          fontSize: '46px', 
+          fontSize: '42px', 
           fontWeight: '800', 
           color: '#ffffff',
           lineHeight: '1.2'
         }}>
-          Building Scalable Systems & <span style={{ background: 'linear-gradient(135deg, #818cf8, #f472b6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Modern Web Apps</span>
+          Engineering Scalable Web Apps & <span style={{ background: 'linear-gradient(135deg, #818cf8, #f472b6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Distributed Systems</span>
         </h1>
         
         <p style={{ 
           margin: '0 auto', 
-          fontSize: '16px', 
+          fontSize: '15px', 
           color: '#9ca3af', 
-          maxWidth: '650px', 
+          maxWidth: '700px', 
           lineHeight: '1.6' 
         }}>
-          Crafting high-performance MERN applications, distributed Java networks, and robust database infrastructures with precision.
+          Showcasing production-grade MERN solutions, Java network pipelines, and machine learning models built for high-performance environments.
         </p>
       </header>
 
-      {/* Main Content */}
-      <main style={{ position: 'relative', zIndex: 10, maxWidth: '1000px', margin: '0 auto 80px auto', padding: '0 20px' }}>
+      {/* Main Content Dashboard */}
+      <main style={{ position: 'relative', zIndex: 10, maxWidth: '1050px', margin: '0 auto 80px auto', padding: '0 20px' }}>
         
-        {/* Add Project Form */}
+        {/* Quick Add Project Control Card */}
         <section style={{ 
           background: 'rgba(17, 24, 39, 0.7)', 
           backdropFilter: 'blur(10px)',
-          padding: '28px', 
+          padding: '24px', 
           borderRadius: '16px', 
           boxShadow: '0 10px 30px rgba(0,0,0,0.5)', 
-          marginBottom: '50px', 
+          marginBottom: '40px', 
           border: '1px solid rgba(255, 255, 255, 0.08)' 
         }}>
-          <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', color: '#ffffff', fontWeight: '600' }}>+ Deploy New Project to Backend</h3>
-          <form onSubmit={handleAddProject} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr auto', gap: '14px' }}>
+          <h3 style={{ margin: '0 0 14px 0', fontSize: '17px', color: '#ffffff', fontWeight: '600' }}>+ Register New Engineering Project to Cluster</h3>
+          <form onSubmit={handleAddProject} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px' }}>
             <input 
               type="text" 
               placeholder="Project Title" 
               value={newTitle} 
               onChange={(e) => setNewTitle(e.target.value)}
-              style={{ 
-                background: 'rgba(3, 7, 18, 0.6)', 
-                border: '1px solid rgba(255, 255, 255, 0.1)', 
-                padding: '12px 16px', 
-                borderRadius: '10px', 
-                color: '#ffffff',
-                outline: 'none',
-                fontSize: '14px'
-              }}
+              style={{ background: 'rgba(3, 7, 18, 0.6)', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '10px 14px', borderRadius: '8px', color: '#ffffff', outline: 'none', fontSize: '13px' }}
               required
             />
             <input 
@@ -220,57 +231,82 @@ function App() {
               placeholder="Short Description" 
               value={newDesc} 
               onChange={(e) => setNewDesc(e.target.value)}
-              style={{ 
-                background: 'rgba(3, 7, 18, 0.6)', 
-                border: '1px solid rgba(255, 255, 255, 0.1)', 
-                padding: '12px 16px', 
-                borderRadius: '10px', 
-                color: '#ffffff',
-                outline: 'none',
-                fontSize: '14px'
-              }}
+              style={{ background: 'rgba(3, 7, 18, 0.6)', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '10px 14px', borderRadius: '8px', color: '#ffffff', outline: 'none', fontSize: '13px' }}
               required
+            />
+            <select 
+              value={newCategory} 
+              onChange={(e) => setNewCategory(e.target.value)}
+              style={{ background: '#030712', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '10px 14px', borderRadius: '8px', color: '#ffffff', outline: 'none', fontSize: '13px' }}
+            >
+              <option value="Full-Stack">Full-Stack (MERN)</option>
+              <option value="Distributed">Distributed Systems</option>
+              <option value="Machine Learning">Machine Learning</option>
+              <option value="Desktop">Java / Desktop</option>
+            </select>
+            <input 
+              type="text" 
+              placeholder="Tech Stack (comma separated)" 
+              value={newTech} 
+              onChange={(e) => setNewTech(e.target.value)}
+              style={{ background: 'rgba(3, 7, 18, 0.6)', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '10px 14px', borderRadius: '8px', color: '#ffffff', outline: 'none', fontSize: '13px' }}
+            />
+            <input 
+              type="text" 
+              placeholder="GitHub URL" 
+              value={newGithub} 
+              onChange={(e) => setNewGithub(e.target.value)}
+              style={{ background: 'rgba(3, 7, 18, 0.6)', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '10px 14px', borderRadius: '8px', color: '#ffffff', outline: 'none', fontSize: '13px' }}
             />
             <button 
               type="submit" 
               disabled={submitting}
-              style={{ 
-                background: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)', 
-                color: '#ffffff', 
-                border: 'none', 
-                padding: '12px 24px', 
-                borderRadius: '10px', 
-                fontWeight: '600', 
-                cursor: 'pointer',
-                boxShadow: '0 4px 15px rgba(99, 102, 241, 0.4)',
-                fontSize: '14px'
-              }}
+              style={{ background: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)', color: '#ffffff', border: 'none', padding: '10px 20px', borderRadius: '8px', fontWeight: '600', cursor: 'pointer', boxShadow: '0 4px 15px rgba(99, 102, 241, 0.4)', fontSize: '13px' }}
             >
-              {submitting ? 'Adding...' : 'Add Project'}
+              {submitting ? 'Deploying...' : 'Add Project'}
             </button>
           </form>
         </section>
 
-        {/* Section Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '25px' }}>
-          <h2 style={{ margin: 0, fontSize: '24px', fontWeight: '700', color: '#ffffff' }}>Featured Works</h2>
-          <span style={{ fontSize: '13px', color: '#6b7280', background: 'rgba(255,255,255,0.03)', padding: '6px 12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
-            Live API Feed: Connected
-          </span>
+        {/* Category Filter Tabs */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '25px', flexWrap: 'wrap', gap: '15px' }}>
+          <h2 style={{ margin: 0, fontSize: '22px', fontWeight: '700', color: '#ffffff' }}>Engineering Portfolio</h2>
+          
+          <div style={{ display: 'flex', gap: '8px', background: 'rgba(17, 24, 39, 0.8)', padding: '6px', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+            {['All', 'Full-Stack', 'Distributed', 'Machine Learning', 'Desktop'].map(cat => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                style={{
+                  background: selectedCategory === cat ? '#6366f1' : 'transparent',
+                  color: selectedCategory === cat ? '#ffffff' : '#9ca3af',
+                  border: 'none',
+                  padding: '6px 14px',
+                  borderRadius: '8px',
+                  fontSize: '12px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Project Grid */}
         {loading ? (
-          <p style={{ textAlign: 'center', color: '#9ca3af', padding: '40px' }}>Loading systems data...</p>
+          <p style={{ textAlign: 'center', color: '#9ca3af', padding: '40px' }}>Loading projects from cluster...</p>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
-            {projects.length > 0 ? (
-              projects.map((project) => (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(310px, 1fr))', gap: '24px' }}>
+            {filteredProjects.length > 0 ? (
+              filteredProjects.map((project) => (
                 <div key={project._id || Math.random()} style={{
                   background: 'rgba(17, 24, 39, 0.6)',
                   backdropFilter: 'blur(10px)',
                   borderRadius: '16px',
-                  padding: '28px',
+                  padding: '24px',
                   boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
                   border: '1px solid rgba(255, 255, 255, 0.06)',
                   display: 'flex',
@@ -291,30 +327,44 @@ function App() {
                 }}
                 >
                   <div>
-                    <div style={{
-                      display: 'inline-block',
-                      background: 'rgba(99, 102, 241, 0.15)',
-                      color: '#818cf8',
-                      fontSize: '11px',
-                      fontWeight: '700',
-                      padding: '5px 12px',
-                      borderRadius: '20px',
-                      marginBottom: '16px',
-                      letterSpacing: '0.5px'
-                    }}>
-                      SYSTEM ARCHITECTURE
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+                      <span style={{
+                        background: 'rgba(99, 102, 241, 0.15)',
+                        color: '#818cf8',
+                        fontSize: '11px',
+                        fontWeight: '700',
+                        padding: '4px 10px',
+                        borderRadius: '20px',
+                        letterSpacing: '0.5px'
+                      }}>
+                        {project.category || 'Full-Stack'}
+                      </span>
+                      <span style={{ width: '8px', height: '8px', background: '#10b981', borderRadius: '50%' }}></span>
                     </div>
-                    <h3 style={{ margin: '0 0 10px 0', fontSize: '20px', color: '#ffffff', fontWeight: '700' }}>{project.title}</h3>
-                    <p style={{ margin: 0, color: '#9ca3af', fontSize: '14px', lineHeight: '1.6' }}>{project.description}</p>
+
+                    <h3 style={{ margin: '0 0 10px 0', fontSize: '19px', color: '#ffffff', fontWeight: '700' }}>{project.title}</h3>
+                    <p style={{ margin: '0 0 16px 0', color: '#9ca3af', fontSize: '13px', lineHeight: '1.6' }}>{project.description}</p>
+                    
+                    {/* Tech Stack Badges */}
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '20px' }}>
+                      {project.techStack && project.techStack.map((tech, i) => (
+                        <span key={i} style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: '#d1d5db', fontSize: '11px', padding: '3px 8px', borderRadius: '6px' }}>
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                  <div style={{ marginTop: '25px', paddingTop: '15px', borderTop: '1px solid rgba(255, 255, 255, 0.05)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ color: '#818cf8', fontSize: '13px', fontWeight: '600' }}>Explore Repository &rarr;</span>
-                    <span style={{ width: '8px', height: '8px', background: '#10b981', borderRadius: '50%' }}></span>
+
+                  <div style={{ paddingTop: '15px', borderTop: '1px solid rgba(255, 255, 255, 0.05)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <a href={project.githubUrl || '#'} target="_blank" rel="noopener noreferrer" style={{ color: '#818cf8', fontSize: '13px', fontWeight: '600', textDecoration: 'none' }}>
+                      Source Code &rarr;
+                    </a>
+                    <span style={{ fontSize: '11px', color: '#6b7280' }}>Verified Build</span>
                   </div>
                 </div>
               ))
             ) : (
-              <p style={{ color: '#9ca3af' }}>No projects registered in cluster.</p>
+              <p style={{ color: '#9ca3af', gridColumn: '1 / -1', textAlign: 'center', padding: '40px' }}>No projects found under this category.</p>
             )}
           </div>
         )}
