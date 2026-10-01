@@ -1,0 +1,37 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "portfolio-client": {
+      "root": "portfolio-client",
+      "framework": "create-react-app",
+      "bindings": [
+        {
+          "type": "service",
+          "service": "portfolio-server",
+          "format": "url",
+          "env": "REACT_APP_API_URL"
+        }
+      ]
+    },
+    "portfolio-server": {
+      "root": "portfolio-server",
+      "framework": "express"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": {
+        "service": "portfolio-server",
+        "path": "/$1"
+      }
+    },
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "portfolio-client",
+        "path": "/$1"
+      }
+    }
+  ]
+}
