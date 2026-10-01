@@ -5,7 +5,7 @@ export const projectsData = [
     description: "A secure financial tracking application designed to help users monitor expenses, manage custom budget categories, and analyze spending habits through dynamic database queries.",
     techStack: ["PHP", "MySQL", "HTML/CSS", "JavaScript", "Bootstrap"],
     liveUrl: "", 
-    githubUrl: "https://github.com/mulatumuler82-ui/cost-management", // Update with your exact cost management repo name
+    githubUrl: "https://github.com/mulatumuler82-ui/cost-management",
     category: "Full-Stack"
   },
   {
@@ -14,7 +14,7 @@ export const projectsData = [
     description: "A machine learning classification project evaluating applicant data using logistic regression, decision trees, and random forest models to predict loan eligibility.",
     techStack: ["Python", "Scikit-Learn", "Pandas", "Streamlit"],
     liveUrl: "",
-    githubUrl: "https://github.com/mulatumuler82-ui/loan-approval-prediction", // Update with your exact loan prediction repo name
+    githubUrl: "https://github.com/mulatumuler82-ui/loan-approval-prediction",
     category: "Machine Learning"
   },
   {
@@ -23,7 +23,7 @@ export const projectsData = [
     description: "A comprehensive university lab management system designed for tracking equipment inventory, maintenance schedules, and user requests.",
     techStack: ["React", "Node.js", "Express", "MongoDB Atlas"],
     liveUrl: "",
-    githubUrl: "https://github.com/mulatumuler82-ui/lab-equipment-system", // Moved here for the Lab Equipment project
+    githubUrl: "https://github.com/mulatumuler82-ui/lab-equipment-system",
     category: "Full-Stack"
   }
 ];
