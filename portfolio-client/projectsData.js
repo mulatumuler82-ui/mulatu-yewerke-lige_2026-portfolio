@@ -14,7 +14,7 @@ export const projectsData = [
     description: "A machine learning classification project evaluating applicant data using logistic regression, decision trees, and random forest models to predict loan eligibility.",
     techStack: ["Python", "Scikit-Learn", "Pandas", "Streamlit"],
     liveUrl: "",
-    githubUrl: "https://github.com/mulatumuler82-ui",
+    githubUrl: "https://github.com/mulatumuler82-ui/lab-equipment-system",
     category: "Machine Learning"
   },
   {
