@@ -23,7 +23,7 @@ app.post('/api/contact', async (req, res) => {
     // Send the real email to your personal inbox
     await resend.emails.send({
       from: 'Portfolio Contact <onboarding@resend.dev>',
-      to: ['mulatumuler82@gmail.com'], // <--- YOUR REAL PERSONAL EMAIL
+      to: ['mulatumuler82@gmail.com'],
       subject: `New Portfolio Message from ${name}`,
       html: `
         <h2>New Contact Form Submission</h2>
@@ -41,10 +41,17 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
-// Connect to MongoDB and start server
+// Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/portfolio')
   .then(() => {
     console.log("Connected to MongoDB Atlas / Local DB");
-    app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
   })
-  .catch((err) => console.error("Database connection error:", err));
+  .catch((err: unknown) => console.error("Database connection error:", err));
+
+// Only call app.listen when running locally, NOT on Vercel
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+}
+
+// CRITICAL: Export the app for Vercel's serverless function handler
+export default app;
