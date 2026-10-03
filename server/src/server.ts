@@ -9,12 +9,15 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Updated CORS configuration to allow requests from your live frontend
+// CORS configuration
 app.use(cors({
   origin: '*',
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// CRITICAL: Handle preflight OPTIONS requests for Vercel serverless functions
+app.options('*', cors());
 
 app.use(express.json());
 
@@ -47,7 +50,7 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
-// Root route so visiting the backend URL directly doesn't show "Cannot GET /"
+// Root route
 app.get('/', (req, res) => {
   res.status(200).json({ status: 'online', message: 'Portfolio Backend API is running successfully!' });
 });
