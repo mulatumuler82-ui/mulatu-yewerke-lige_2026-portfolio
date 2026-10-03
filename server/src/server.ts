@@ -9,7 +9,13 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+// Updated CORS configuration to allow requests from your live frontend
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 
 // Initialize Resend securely using environment variables only
@@ -40,10 +46,12 @@ app.post('/api/contact', async (req, res) => {
     res.status(500).json({ success: false, error: 'Failed to send email.' });
   }
 });
+
 // Root route so visiting the backend URL directly doesn't show "Cannot GET /"
 app.get('/', (req, res) => {
   res.status(200).json({ status: 'online', message: 'Portfolio Backend API is running successfully!' });
 });
+
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/portfolio')
   .then(() => {
