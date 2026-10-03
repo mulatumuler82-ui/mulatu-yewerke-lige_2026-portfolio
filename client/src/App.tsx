@@ -10,12 +10,11 @@ export default function App() {
     setStatus('Sending...');
 
     try {
-      // REPLACE with your actual live Vercel backend URL
       const res = await fetch('https://mulatu-yewerke-lige-portfolio.vercel.app/api/contact', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(formData),
-});
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
 
       const data = await res.json();
 
@@ -28,6 +27,14 @@ export default function App() {
     } catch (err) {
       console.error(err);
       setStatus('Error connecting to server.');
+    }
+  };
+
+  // Function to handle the GitHub confirmation popup
+  const handleGitHubClick = (repoUrl: string) => {
+    const confirmView = window.confirm("Do you want to see in GitHub?");
+    if (confirmView) {
+      window.open(repoUrl, '_blank');
     }
   };
 
@@ -95,46 +102,78 @@ export default function App() {
         <div className="grid md:grid-cols-2 gap-6">
           
           {/* Project 1: IU-LEMMS */}
-          <div className="bg-gray-900/60 border border-gray-800 p-6 rounded-2xl hover:border-blue-500/50 transition">
-            <h3 className="text-xl font-semibold text-white mb-2">IU-LEMMS Lab Management System</h3>
-            <p className="text-gray-400 text-sm mb-4">University laboratory equipment management system built with full architectural modeling, UML diagrams, and structured database workflows.</p>
-            <div className="flex flex-wrap gap-2">
-              <span className="text-xs font-mono text-blue-400 bg-blue-950/50 px-2 py-1 rounded">TypeScript</span>
-              <span className="text-xs font-mono text-blue-400 bg-blue-950/50 px-2 py-1 rounded">MERN Stack</span>
+          <div className="bg-gray-900/60 border border-gray-800 p-6 rounded-2xl hover:border-blue-500/50 transition flex flex-col justify-between">
+            <div>
+              <h3 className="text-xl font-semibold text-white mb-2">IU-LEMMS Lab Management System</h3>
+              <p className="text-gray-400 text-sm mb-4">University laboratory equipment management system built with full architectural modeling, UML diagrams, and structured database workflows.</p>
+              <div className="flex flex-wrap gap-2 mb-6">
+                <span className="text-xs font-mono text-blue-400 bg-blue-950/50 px-2 py-1 rounded">TypeScript</span>
+                <span className="text-xs font-mono text-blue-400 bg-blue-950/50 px-2 py-1 rounded">MERN Stack</span>
+              </div>
             </div>
+            <button
+              onClick={() => handleGitHubClick('https://github.com/mulatumuler82-ui/lab-equipment-system')}
+              className="text-sm font-medium text-blue-400 bg-blue-950/40 border border-blue-900/50 hover:bg-blue-900/50 py-2 px-4 rounded-xl transition text-center"
+            >
+              View on GitHub
+            </button>
           </div>
 
           {/* Project 2: Distributed Banking */}
-          <div className="bg-gray-900/60 border border-gray-800 p-6 rounded-2xl hover:border-blue-500/50 transition">
-            <h3 className="text-xl font-semibold text-white mb-2">Distributed Banking Protocol</h3>
-            <p className="text-gray-400 text-sm mb-4">Java RMI and socket-based distributed application prototype focusing on network synchronization, RPC, and stub-skeleton architecture.</p>
-            <div className="flex flex-wrap gap-2">
-              <span className="text-xs font-mono text-blue-400 bg-blue-950/50 px-2 py-1 rounded">Java RMI</span>
-              <span className="text-xs font-mono text-blue-400 bg-blue-950/50 px-2 py-1 rounded">JDBC</span>
-              <span className="text-xs font-mono text-blue-400 bg-blue-950/50 px-2 py-1 rounded">IntelliJ IDEA</span>
+          <div className="bg-gray-900/60 border border-gray-800 p-6 rounded-2xl hover:border-blue-500/50 transition flex flex-col justify-between">
+            <div>
+              <h3 className="text-xl font-semibold text-white mb-2">Distributed Banking Protocol</h3>
+              <p className="text-gray-400 text-sm mb-4">Java RMI and socket-based distributed application prototype focusing on network synchronization, RPC, and stub-skeleton architecture.</p>
+              <div className="flex flex-wrap gap-2 mb-6">
+                <span className="text-xs font-mono text-blue-400 bg-blue-950/50 px-2 py-1 rounded">Java RMI</span>
+                <span className="text-xs font-mono text-blue-400 bg-blue-950/50 px-2 py-1 rounded">JDBC</span>
+                <span className="text-xs font-mono text-blue-400 bg-blue-950/50 px-2 py-1 rounded">IntelliJ IDEA</span>
+              </div>
             </div>
+            <button
+              onClick={() => handleGitHubClick('https://github.com/mulatumuler82-ui/try-git')}
+              className="text-sm font-medium text-blue-400 bg-blue-950/40 border border-blue-900/50 hover:bg-blue-900/50 py-2 px-4 rounded-xl transition text-center"
+            >
+              View on GitHub
+            </button>
           </div>
 
           {/* Project 3: Cost Management App */}
-          <div className="bg-gray-900/60 border border-gray-800 p-6 rounded-2xl hover:border-blue-500/50 transition">
-            <h3 className="text-xl font-semibold text-white mb-2">Personal Cost Management App</h3>
-            <p className="text-gray-400 text-sm mb-4">Web-based personal finance and expense tracking application featuring user authentication, secure database queries, and data visualization.</p>
-            <div className="flex flex-wrap gap-2">
-              <span className="text-xs font-mono text-blue-400 bg-blue-950/50 px-2 py-1 rounded">PHP</span>
-              <span className="text-xs font-mono text-blue-400 bg-blue-950/50 px-2 py-1 rounded">MySQL</span>
-              <span className="text-xs font-mono text-blue-400 bg-blue-950/50 px-2 py-1 rounded">Bootstrap</span>
+          <div className="bg-gray-900/60 border border-gray-800 p-6 rounded-2xl hover:border-blue-500/50 transition flex flex-col justify-between">
+            <div>
+              <h3 className="text-xl font-semibold text-white mb-2">Personal Cost Management App</h3>
+              <p className="text-gray-400 text-sm mb-4">Web-based personal finance and expense tracking application featuring user authentication, secure database queries, and data visualization.</p>
+              <div className="flex flex-wrap gap-2 mb-6">
+                <span className="text-xs font-mono text-blue-400 bg-blue-950/50 px-2 py-1 rounded">PHP</span>
+                <span className="text-xs font-mono text-blue-400 bg-blue-950/50 px-2 py-1 rounded">MySQL</span>
+                <span className="text-xs font-mono text-blue-400 bg-blue-950/50 px-2 py-1 rounded">Bootstrap</span>
+              </div>
             </div>
+            <button
+              onClick={() => handleGitHubClick('https://github.com/mulatumuler82-ui/cost-management-system')}
+              className="text-sm font-medium text-blue-400 bg-blue-950/40 border border-blue-900/50 hover:bg-blue-900/50 py-2 px-4 rounded-xl transition text-center"
+            >
+              View on GitHub
+            </button>
           </div>
 
           {/* Project 4: Loan Approval Prediction */}
-          <div className="bg-gray-900/60 border border-gray-800 p-6 rounded-2xl hover:border-blue-500/50 transition">
-            <h3 className="text-xl font-semibold text-white mb-2">Loan Approval Prediction Model</h3>
-            <p className="text-gray-400 text-sm mb-4">Supervised machine learning classification pipeline evaluating risk metrics using Logistic Regression, Decision Trees, and Random Forests.</p>
-            <div className="flex flex-wrap gap-2">
-              <span className="text-xs font-mono text-blue-400 bg-blue-950/50 px-2 py-1 rounded">Python</span>
-              <span className="text-xs font-mono text-blue-400 bg-blue-950/50 px-2 py-1 rounded">Scikit-Learn</span>
-              <span className="text-xs font-mono text-blue-400 bg-blue-950/50 px-2 py-1 rounded">Classification</span>
+          <div className="bg-gray-900/60 border border-gray-800 p-6 rounded-2xl hover:border-blue-500/50 transition flex flex-col justify-between">
+            <div>
+              <h3 className="text-xl font-semibold text-white mb-2">Loan Approval Prediction Model</h3>
+              <p className="text-gray-400 text-sm mb-4">Supervised machine learning classification pipeline evaluating risk metrics using Logistic Regression, Decision Trees, and Random Forests.</p>
+              <div className="flex flex-wrap gap-2 mb-6">
+                <span className="text-xs font-mono text-blue-400 bg-blue-950/50 px-2 py-1 rounded">Python</span>
+                <span className="text-xs font-mono text-blue-400 bg-blue-950/50 px-2 py-1 rounded">Scikit-Learn</span>
+                <span className="text-xs font-mono text-blue-400 bg-blue-950/50 px-2 py-1 rounded">Classification</span>
+              </div>
             </div>
+            <button
+              onClick={() => handleGitHubClick('https://github.com/mulatumuler82-ui/mern-portfolio')}
+              className="text-sm font-medium text-blue-400 bg-blue-950/40 border border-blue-900/50 hover:bg-blue-900/50 py-2 px-4 rounded-xl transition text-center"
+            >
+              View on GitHub
+            </button>
           </div>
 
         </div>
