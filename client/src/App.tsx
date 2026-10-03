@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import profileImg from './g.jpg';
 
 export default function App() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
@@ -6,23 +7,26 @@ export default function App() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setStatus('Sending...');
+
     try {
-     
-     const res = await fetch('/api/contact', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(formData),
-});
-     
-     
-      
+      // REPLACE with your actual live Vercel backend URL
+      const res = await fetch('https://mulatu-yewerke-lige-portfolio.vercel.app/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
       if (res.ok) {
-        setStatus('Message sent successfully to database!');
+        setStatus('Message sent successfully to your inbox!');
         setFormData({ name: '', email: '', message: '' });
       } else {
-        setStatus('Failed to send message.');
+        setStatus(data.error || 'Failed to send message.');
       }
     } catch (err) {
+      console.error(err);
       setStatus('Error connecting to server.');
     }
   };
@@ -41,7 +45,7 @@ export default function App() {
       </nav>
 
       {/* Hero / About Section */}
-      <main className="flex-grow max-w-6xl mx-auto px-6 py-16 md:py-24 flex items-center w-full">
+      <main id="about" className="flex-grow max-w-6xl mx-auto px-6 py-16 md:py-24 flex items-center w-full">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center w-full">
           
           {/* Left Column: Text Content */}
@@ -74,7 +78,7 @@ export default function App() {
               <div className="absolute inset-0 bg-blue-600/20 rounded-3xl blur-2xl transform -rotate-6"></div>
               <div className="relative w-full h-full rounded-3xl overflow-hidden border-2 border-blue-900/50 shadow-2xl bg-gray-900">
                 <img 
-                  src="src/g.jpg" 
+                  src={profileImg} 
                   alt="Mulatu Jaleta Abdeta" 
                   className="w-full h-full object-cover object-center grayscale hover:grayscale-0 transition duration-500"
                 />
@@ -139,7 +143,7 @@ export default function App() {
       {/* Contact Section */}
       <section id="contact" className="max-w-xl mx-auto bg-gray-900/60 border border-gray-800 p-8 rounded-2xl text-left w-full mb-20">
         <h2 className="text-2xl font-bold text-white mb-2">Get in Touch</h2>
-        <p className="text-gray-400 text-sm mb-6">Send a message directly to the backend database.</p>
+        <p className="text-gray-400 text-sm mb-6">Send a message directly to my inbox.</p>
         
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>

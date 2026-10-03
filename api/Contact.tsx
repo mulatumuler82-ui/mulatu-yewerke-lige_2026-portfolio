@@ -1,26 +1,35 @@
 import React, { useState } from 'react';
 
 export const Contact: React.FC = () => {
-  const [formData, setFormData] = useState({ sender_name: '', email: '', message_body: '' });
+  // Field names match what the backend expects: name, email, message
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setStatus("Sending...");
+
     try {
-      const response = await fetch('http://localhost:5000/api/contact', {
+      // REPLACE with your actual live Vercel backend URL
+      const API_URL = 'https://mulatu-yewerke-lige-2026-portfolio-ten.vercel.app/api/contact';
+
+      const response = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       });
+      
       const data = await response.json();
+      
       if (response.ok) {
-        setStatus("Message sent successfully!");
-        setFormData({ sender_name: '', email: '', message_body: '' });
+        setStatus("Message sent successfully to your inbox!");
+        setFormData({ name: '', email: '', message: '' });
       } else {
         setStatus(data.error || "Failed to send message.");
       }
     } catch (err) {
-      setStatus("Network error. Please try again.");
+      console.error(err);
+      setStatus("Network error. Please check your connection.");
     }
   };
 
@@ -33,8 +42,8 @@ export const Contact: React.FC = () => {
           <input
             type="text"
             required
-            value={formData.sender_name}
-            onChange={(e) => setFormData({ ...formData, sender_name: e.target.value })}
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             className="w-full bg-gray-950 border border-gray-800 rounded-lg p-3 text-white focus:outline-none focus:border-blue-500"
           />
         </div>
@@ -53,8 +62,8 @@ export const Contact: React.FC = () => {
           <textarea
             required
             rows={4}
-            value={formData.message_body}
-            onChange={(e) => setFormData({ ...formData, message_body: e.target.value })}
+            value={formData.message}
+            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
             className="w-full bg-gray-950 border border-gray-800 rounded-lg p-3 text-white focus:outline-none focus:border-blue-500"
           />
         </div>
