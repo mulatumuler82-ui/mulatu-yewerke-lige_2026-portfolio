@@ -12,10 +12,10 @@ export default function App() {
     try {
       // REPLACE with your actual live Vercel backend URL
       const res = await fetch('https://mulatu-yewerke-lige-portfolio.vercel.app/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(formData),
+});
 
       const data = await res.json();
 
